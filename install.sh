@@ -2,7 +2,7 @@
 set -euo pipefail
 
 SCI_DIR="$HOME/.sci"
-SCI_REPO="https://github.com/OWNER/sci.git"
+SCI_REPO="https://github.com/MikolajMys/sci.git"
 
 echo ""
 echo "  🔒 SCI — Safe Claude Integration"
