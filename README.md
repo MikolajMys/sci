@@ -4,7 +4,7 @@ CLI tool for secure Claude Code isolation on macOS.
 
 ## Install
 
-curl -fsSL https://raw.githubusercontent.com/TWOJ-GH/sci/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/MikolajMys/sci/main/install.sh | bash
 
 
 ## Commands
