@@ -222,9 +222,10 @@ run_repair() {
   if [ $needs_home_acl -eq 1 ]; then
     step=$((step + 1))
     step_start "Restoring home directory ACL" $step $repair_steps
-    if sudo chmod 700 "$SCI_MAIN_HOME" \
-      && sudo chmod +a "$SCI_USER_NAME allow search" "$SCI_MAIN_HOME" \
-      && sudo chmod +a "$SCI_USER_NAME deny list,read,write,add_file,delete,add_subdirectory,readattr,writeattr,readextattr,writeextattr" "$SCI_MAIN_HOME"; then
+    if sudo chmod -N "$SCI_MAIN_HOME" \
+      && sudo chmod 700 "$SCI_MAIN_HOME" \
+      && sudo chmod +a "$SCI_USER_NAME allow search,readattr" "$SCI_MAIN_HOME" \
+      && sudo chmod +a "$SCI_USER_NAME deny list,read,write,add_file,delete,add_subdirectory,writeattr,readextattr,writeextattr" "$SCI_MAIN_HOME"; then
       step_ok
     else
       step_fail "Home ACL failed"
