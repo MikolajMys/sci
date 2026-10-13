@@ -98,7 +98,9 @@ run_setup() {
 
   section "Setting up"
 
+  # Cache sudo password upfront
   sudo -v
+  echo ""
 
   local step=0
   local failed=0

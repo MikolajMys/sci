@@ -12,6 +12,10 @@ run_repair() {
 
   section "Diagnosing"
 
+  # Cache sudo password upfront
+  sudo -v
+  echo ""
+
   # Collect what's broken
   local needs_user=0
   local needs_group=0
