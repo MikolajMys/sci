@@ -20,6 +20,9 @@ show_help() {
   echo "    remove-project   Remove a project from isolation"
   echo "    hooks install    Install/update Claude Code hooks"
   echo "    uninstall        Remove everything SCI created"
+  echo "    shell          Enter isolated user shell"
+  echo "    fix            Fix file permissions after work session"
+  echo "    path [name]    Print projects directory (or specific project path)"
   echo ""
   echo "  Version: $SCI_VERSION"
   echo ""
@@ -68,6 +71,34 @@ case "${1:-}" in
     ;;
   -h|--help|help|"")
     show_help
+    ;;
+  shell)
+    source "$SCI_DIR/lib/config.sh"
+    config_load
+    exec sudo launchctl asuser "$SCI_USER_UID" sudo -u "$SCI_USER_NAME" env HOME="/Users/$SCI_USER_NAME" /bin/zsh
+    ;;
+  fix)
+    source "$SCI_DIR/lib/config.sh"
+    config_load
+    sudo chmod -R +a "$SCI_USER_NAME allow $SCI_ACL" "$SCI_PROJECTS_DIR"
+    sudo chmod -R +a "$SCI_MAIN_USER allow $SCI_ACL" "$SCI_PROJECTS_DIR"
+    for d in "$SCI_PROJECTS_DIR"/*/security_data; do
+      [ -d "$d" ] && sudo chmod +a "$SCI_USER_NAME deny list,search,readattr" "$d"
+    done
+    echo "  ✓ Permissions fixed"
+    ;;
+  cd)
+    echo "  cd nie działa jako subkomenda (subprocess nie zmieni katalogu parenta)."
+    echo "  Użyj: cd \$(sci path ${2:-})"
+    ;;
+  path)
+    source "$SCI_DIR/lib/config.sh"
+    config_load
+    if [ -n "${2:-}" ]; then
+      echo "$SCI_PROJECTS_DIR/$2"
+    else
+      echo "$SCI_PROJECTS_DIR"
+    fi
     ;;
   *)
     echo "  Unknown command: $1"
