@@ -75,6 +75,9 @@ case "${1:-}" in
   shell)
     source "$SCI_DIR/lib/config.sh"
     config_load
+    if [ -n "$SCI_PROMPT_FILE" ] && [ -f "$SCI_PROMPT_FILE" ]; then
+      open -a TextEdit "$SCI_PROMPT_FILE"
+    fi
     exec sudo launchctl asuser "$SCI_USER_UID" sudo -u "$SCI_USER_NAME" env HOME="/Users/$SCI_USER_NAME" /bin/zsh
     ;;
   fix)
